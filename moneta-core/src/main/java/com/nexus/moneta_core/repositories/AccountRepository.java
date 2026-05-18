@@ -1,8 +1,10 @@
-package com.nexus.moneta_core.repositories;
+package com.nexus.moneta_core.repositories; // Ajustado para o seu plural
 
 import com.nexus.moneta_core.domain.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.UUID;
+import org.springframework.stereotype.Repository;
 
-public interface AccountRepository extends JpaRepository<Account, UUID> {
+@Repository
+public interface AccountRepository extends JpaRepository<Account, Long> {
+    // Como a Entidade Account usa Long no ID, mantemos o Long aqui!
 }
