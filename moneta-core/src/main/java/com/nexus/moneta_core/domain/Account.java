@@ -1,29 +1,34 @@
-package com.nexus.moneta_core.domain;
+package com.nexus.moneta_core.domain; // Verifique se o nome do seu package está igual
 
 import jakarta.persistence.*;
-import lombok.*;
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @Entity
-@Table(name = "tb_accounts")
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Table(name = "accounts")
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(precision = 19, scale = 2, nullable = false)
-    private BigDecimal balance = BigDecimal.ZERO;
+    @Column(unique = true, nullable = false)
+    private String agency;
 
-    @ManyToOne // Muitas contas podem pertencer a UM usuário
-    @JoinColumn(name = "user_id") // Nome da coluna estrangeira no banco
-    private User owner;
+    @Column(unique = true, nullable = false)
+    private String number;
 
-    // Vamos definir se é CONTA_CORRENTE ou POUPANCA
-    private String accountType;
+    // A Regra de Ouro do Mercado Financeiro:
+    @Column(nullable = false)
+    private BigDecimal balance;
+
+    // O Relacionamento: Essa conta pertence a UM usuário.
+    @OneToOne
+    @JoinColumn(name = "user_id") // Essa anotação cria a coluna (Chave Estrangeira) no banco
+    private User user;
+
+    // Construtor vazio (obrigatório para o Spring/Hibernate funcionar)
+    public Account() {
+    }
+
+    // (Não esqueça de gerar os Getters e Setters com o botão direito -> Generate -> Getters and Setters)
 }
